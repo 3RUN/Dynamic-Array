@@ -9,6 +9,7 @@
         "launcher_graphics.h": "c",
         "acknex.h": "c",
         "list.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "dynamic_array.h": "c"
     }
 }

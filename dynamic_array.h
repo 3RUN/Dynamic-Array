@@ -1,5 +1,8 @@
+
 #ifndef _DYNAMIC_ARRAY_H_
 #define _DYNAMIC_ARRAY_H_
+
+#include <stdio.h>
 
 /**
  * \file    dynamic_array.h

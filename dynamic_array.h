@@ -2,8 +2,12 @@
 #define _DYNAMIC_ARRAY_H_
 
 /**
- * \file dynamic_array.h
- * \brief Dynamically growing array implementation.
+ * \file    dynamic_array.h
+ * \brief   Dynamically growing array implementation.
+ * 
+ * \authors Originally created by Sidney Just aka JustSid
+ *          Migrated to LiteC by Magomet Kocharov aka 3RUN
+ * \date    15.01.2022
  *
  * dynamic_array.h provides a generic dynamically growing array
  */
@@ -11,7 +15,7 @@
 /**
  * If uncommented - enables 'error' messages when something goes wrong.
  */
-//#define DEBUG_ARRAY
+#define DEBUG_ARRAY
 
 /**
  * Default initial capacity of the array. Array capacity set to this value automatically if <= 0 capacity was passed in array_create.

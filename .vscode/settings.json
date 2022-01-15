@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "windows.h": "c",
+        "keybinding.h": "c",
+        "ini.h": "c",
+        "imgui.h": "c",
+        "keybind.h": "c",
+        "cmd.h": "c",
+        "launcher_graphics.h": "c",
+        "acknex.h": "c",
+        "list.h": "c",
+        "stdio.h": "c"
+    }
+}

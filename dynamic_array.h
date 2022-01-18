@@ -176,7 +176,7 @@ void *_array_get_element_at(array_t *array, size_t index, size_t type_size);
  * Ends the enumerating through the array.
  * \param   a           Pointer to the array we are getting element from.
  */
-#define array_enumerate_end(a) } } int dumb
+#define array_enumerate_end(a) } } int babushka_n_balalayka
 
 #include "dynamic_array.c"
 #endif

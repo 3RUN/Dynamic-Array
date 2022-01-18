@@ -10,7 +10,23 @@
 
 array_t *a = NULL;
 
-void test_remove()
+void test_add()
+{
+    if (!a)
+    {
+        a = array_create(var, 2);
+    }
+
+    var counter = 0;
+    int i = 0;
+    for (i = 0; i < 10; i++)
+    {
+        array_add(var, a, counter);
+        counter++;
+    }
+}
+
+void test_remove_last()
 {
     if (!a)
     {
@@ -33,22 +49,6 @@ void test_clear_all()
     array_clear(a);
 }
 
-void test_grow()
-{
-    if (!a)
-    {
-        a = array_create(var, 2);
-    }
-
-    var counter = 0;
-    int i = 0;
-    for (i = 0; i < 10; i++)
-    {
-        array_add(var, a, counter);
-        counter++;
-    }
-}
-
 void test_enumerate()
 {
     if (!a)
@@ -58,7 +58,9 @@ void test_enumerate()
 
     var value = 0;
     array_enumerate_begin(var, a, value);
-    printf("%.0f\n", (double)value);
+    {
+        printf("%.0f\n", (double)value);
+    }
     array_enumerate_end(a) // make sure not to place ';' at the end !
 }
 
@@ -69,16 +71,22 @@ void test_contains()
         return;
     }
 
-    var element = 5;
-    int i = 0;
-    for (i = 0; i < a->count; i++)
+    var element = 5, found = false;
+    array_enumerate_begin(var, a, value);
     {
         if (array_get_element_at(var, a, i) != element)
         {
             continue;
         }
 
-        printf("found at index: %d\n", i+1);
+        found = true;
+        printf("found at index: %d\n", i + 1);
+    }
+    array_enumerate_end(a) // make sure not to place ';' at the end !
+
+    if(found == false)
+    {
+        printf("Number %.0f wasn't found in the array.", (double)element);
     }
 }
 
@@ -92,11 +100,11 @@ void main()
 {
     on_exit = on_exit_event;
 
-    on_enter = test_grow;
-    on_space = test_remove;
-    on_tab = test_clear_all;
-    on_e = test_enumerate;
-    on_c = test_contains;
+    on_1 = test_add;
+    on_2 = test_remove_last;
+    on_3 = test_clear_all;
+    on_4 = test_enumerate;
+    on_5 = test_contains;
 
     fps_max = 60;
     warn_level = 6;
@@ -104,23 +112,26 @@ void main()
 
     while (!key_esc)
     {
+        STRING *help_str = "1-to add 10 elements (0...9)\n2-to remove last item\n3-to clear the whole array\n4-to cycle through all elements\n5-check if array contains number 5";
+        draw_text(help_str, 10, 0, COLOR_WHITE);
+
         if (a)
         {
-            DEBUG_VAR(a->capacity, 0);
-            DEBUG_VAR(array_get_count(a), 20);
-            DEBUG_VAR(is_array_not_empty(a), 40);
+            DEBUG_VAR(a->capacity, 120);
+            DEBUG_VAR(array_get_count(a), 140);
+            DEBUG_VAR(is_array_not_empty(a), 160);
 
             // don't allow to crash when empty
             if (is_array_not_empty(a) == true)
             {
                 var last = array_get_last(var, a);
-                DEBUG_VAR(last, 80);
+                DEBUG_VAR(last, 200);
 
                 int i = 0;
                 for (i = 0; i < array_get_count(a); i++)
                 {
                     var num = array_get_element_at(var, a, i);
-                    DEBUG_VAR(num, 120 + 20 * i);
+                    DEBUG_VAR(num, 240 + 20 * i);
                 }
             }
         }

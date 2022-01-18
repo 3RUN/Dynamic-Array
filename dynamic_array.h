@@ -173,10 +173,10 @@ void *_array_get_element_at(array_t *array, size_t index, size_t type_size);
 #define array_enumerate_begin(t, a, v) { int i; for(i = 0; i < a->count; i ++) { t v = array_get_element_at(t, a, i);
 
 /**
- * Ends the enumerating through the array. Make sure to not use ';' at the end when using !
+ * Ends the enumerating through the array.
  * \param   a           Pointer to the array we are getting element from.
  */
-#define array_enumerate_end(a) } }
+#define array_enumerate_end(a) } } int dumb
 
 #include "dynamic_array.c"
 #endif

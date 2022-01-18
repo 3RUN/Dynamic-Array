@@ -57,11 +57,11 @@ void test_enumerate()
     }
 
     var value = 0;
-    array_enumerate_begin(var, a, value) // make sure not to place ';' at the end !
+    array_enumerate_begin(var, a, value)
     {
         printf("%.0f\n", (double)value);
     }
-    array_enumerate_end(a) // make sure not to place ';' at the end !
+    array_enumerate_end(a);
 }
 
 void test_contains()
@@ -72,7 +72,7 @@ void test_contains()
     }
 
     var element = 5, found = false, value = 0;
-    array_enumerate_begin(var, a, value) // make sure not to place ';' at the end !
+    array_enumerate_begin(var, a, value)
     {
         if (array_get_element_at(var, a, i) != element)
         {
@@ -82,9 +82,9 @@ void test_contains()
         found = true;
         printf("found at index: %d\n", i + 1);
     }
-    array_enumerate_end(a) // make sure not to place ';' at the end !
+    array_enumerate_end(a);
 
-    if(found == false)
+    if (found == false)
     {
         printf("Number %.0f wasn't found in the array.", (double)element);
     }

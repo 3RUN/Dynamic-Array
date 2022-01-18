@@ -158,5 +158,18 @@ void *_array_get_element_at(array_t *array, size_t index, size_t type_size);
  */
 #define array_get_element_at(t, a, i) *((t *)_array_get_element_at(a, i, sizeof(t)))
 
+/**
+ * Begins enumerating through the array + 'v' is set to the next element of the array.
+ * \param   t           A data type to cast element to (f.e. var, int, float, ENTITY*).
+ * \param   a           Pointer to the array we are getting element from.
+ * \param   v           Next element of the array + it's casted to the data type given above.
+ */
+#define array_enumerate_begin(t, a, v) { int i; for(i = 0; i < a->count; i ++) { t v = array_get_element_at(t, a, i)
+
+/**
+ * Ends the enumerating through the array. Make sure to not use ';' at the end when using !
+ */
+#define array_enumerate_end() } }
+
 #include "dynamic_array.c"
 #endif

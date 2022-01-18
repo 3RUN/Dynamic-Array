@@ -53,6 +53,19 @@ void test_grow()
     }
 }
 
+void test_enumerate()
+{
+    if (!a)
+    {
+        return;
+    }
+
+    var value = 0;
+    array_enumerate_begin(var, a, value);
+        printf("%.0f\n", (double)value);
+    array_enumerate_end(a) // make sure not to place ';' at the end !
+}
+
 void on_exit_event()
 {
     array_destroy(a);
@@ -66,6 +79,7 @@ void main()
     on_enter = test_grow;
     on_space = test_remove;
     on_tab = test_clear_all;
+    on_e = test_enumerate;
 
     fps_max = 60;
     warn_level = 6;

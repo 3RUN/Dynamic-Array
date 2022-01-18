@@ -71,7 +71,7 @@ void test_contains()
         return;
     }
 
-    var element = 5, found = false;
+    var element = 5, found = false, value = 0;
     array_enumerate_begin(var, a, value);
     {
         if (array_get_element_at(var, a, i) != element)

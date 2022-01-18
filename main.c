@@ -30,11 +30,7 @@ void test_clear_all()
         return;
     }
 
-    int i = 0, count = a->count;
-    for (i = 0; i < count; i++)
-    {
-        array_remove_last(var, a);
-    }
+    array_clear(a);
 }
 
 void test_grow()
@@ -62,7 +58,7 @@ void test_enumerate()
 
     var value = 0;
     array_enumerate_begin(var, a, value);
-        printf("%.0f\n", (double)value);
+    printf("%.0f\n", (double)value);
     array_enumerate_end(a) // make sure not to place ';' at the end !
 }
 

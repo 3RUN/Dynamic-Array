@@ -142,6 +142,12 @@ void *_array_get_element_at(array_t *array, size_t index, size_t type_size);
 #define array_remove_last(t, a) *((t *)_array_remove_last(a)) = NULL
 
 /**
+ * Removes all elements from the given array.
+ * \param   a           Pointer to the array we are removing all elements from.
+ */
+#define array_clear(a) int i, count = a->count; for(i = 0; i < count; i ++) array_remove_last(var, a)
+
+/**
  * Returns the last element from the array. The element will be casted to the given data type.
  * \param   t           A data type to cast element to (f.e. var, int, float, ENTITY*).
  * \param   a           Pointer to the array we are getting element from.

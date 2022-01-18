@@ -62,6 +62,26 @@ void test_enumerate()
     array_enumerate_end(a) // make sure not to place ';' at the end !
 }
 
+void test_contains()
+{
+    if (!a)
+    {
+        return;
+    }
+
+    var element = 5;
+    int i = 0;
+    for (i = 0; i < a->count; i++)
+    {
+        if (array_get_element_at(var, a, i) != element)
+        {
+            continue;
+        }
+
+        printf("found at index: %d\n", i+1);
+    }
+}
+
 void on_exit_event()
 {
     array_destroy(a);
@@ -76,6 +96,7 @@ void main()
     on_space = test_remove;
     on_tab = test_clear_all;
     on_e = test_enumerate;
+    on_c = test_contains;
 
     fps_max = 60;
     warn_level = 6;

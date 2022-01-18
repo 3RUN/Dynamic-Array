@@ -57,7 +57,7 @@ void test_enumerate()
     }
 
     var value = 0;
-    array_enumerate_begin(var, a, value);
+    array_enumerate_begin(var, a, value) // make sure not to place ';' at the end !
     {
         printf("%.0f\n", (double)value);
     }
@@ -72,7 +72,7 @@ void test_contains()
     }
 
     var element = 5, found = false, value = 0;
-    array_enumerate_begin(var, a, value);
+    array_enumerate_begin(var, a, value) // make sure not to place ';' at the end !
     {
         if (array_get_element_at(var, a, i) != element)
         {

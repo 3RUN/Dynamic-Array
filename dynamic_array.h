@@ -145,7 +145,7 @@ void *_array_get_element_at(array_t *array, size_t index, size_t type_size);
  * Removes all elements from the given array.
  * \param   a           Pointer to the array we are removing all elements from.
  */
-#define array_clear(a) int i, count = a->count; for(i = 0; i < count; i ++) array_remove_last(var, a)
+#define array_clear(a) do { int i, count = a->count; for(i = 0; i < count; i ++) array_remove_last(var, a); }while(0)
 
 /**
  * Returns the last element from the array. The element will be casted to the given data type.
@@ -170,13 +170,13 @@ void *_array_get_element_at(array_t *array, size_t index, size_t type_size);
  * \param   a           Pointer to the array we are getting element from.
  * \param   v           Next element of the array + it's casted to the data type given above.
  */
-#define array_enumerate_begin(t, a, v) { int i; for(i = 0; i < a->count; i ++) { t v = array_get_element_at(t, a, i);
+#define array_enumerate_begin(t, a, v) do { int i; for(i = 0; i < a->count; i ++) { t v = array_get_element_at(t, a, i);
 
 /**
  * Ends the enumerating through the array.
  * \param   a           Pointer to the array we are getting element from.
  */
-#define array_enumerate_end(a) } } do {} while(0)
+#define array_enumerate_end(a) } } while(0)
 
 #include "dynamic_array.c"
 #endif

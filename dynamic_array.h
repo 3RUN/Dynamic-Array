@@ -165,6 +165,15 @@ void *_array_get_element_at(array_t *array, size_t index, size_t type_size);
 #define array_get_element_at(t, a, i) *((t *)_array_get_element_at(a, i, sizeof(t)))
 
 /**
+ * Changes the element of an array at the given index to a new value.
+ * \param   t           A data type to cast element to (f.e. var, int, float, ENTITY*).
+ * \param   a           Pointer to the array we are getting element from.
+ * \param   i           Index of the element in the array.
+ * \param   n           New value to change element to.
+ */
+#define array_set_element_at(t, a, i, n) *((t *)_array_get_element_at(a, i, sizeof(t))) = (n)
+
+/**
  * Begins enumerating through the array + 'v' is set to the next element of the array. Make sure to not use ';' at the end when using !
  * \param   t           A data type to cast element to (f.e. var, int, float, ENTITY*).
  * \param   a           Pointer to the array we are getting element from.

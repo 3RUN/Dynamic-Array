@@ -90,6 +90,23 @@ void test_contains()
     }
 }
 
+void test_change_odds()
+{
+    if (!a)
+    {
+        return;
+    }
+
+    array_enumerate_begin(var, a, v)
+    {
+        if (v % 2 == true)
+        {
+            array_set_element_at(var, a, i, 555);
+        }
+    }
+    array_enumerate_end(a);
+}
+
 void on_exit_event()
 {
     array_destroy(a);
@@ -105,6 +122,7 @@ void main()
     on_3 = test_clear_all;
     on_4 = test_enumerate;
     on_5 = test_contains;
+    on_6 = test_change_odds;
 
     fps_max = 60;
     warn_level = 6;
@@ -112,7 +130,7 @@ void main()
 
     while (!key_esc)
     {
-        STRING *help_str = "1-to add 10 elements (0...9)\n2-to remove last item\n3-to clear the whole array\n4-to cycle through all elements\n5-check if array contains number 5";
+        STRING *help_str = "1-to add 10 elements (0...9)\n2-to remove last item\n3-to clear the whole array\n4 - to cycle through all elements\n5 - check if array contains number 5\n6 - change all odd numbers to 555";
         draw_text(help_str, 10, 0, COLOR_WHITE);
 
         if (a)

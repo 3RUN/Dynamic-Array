@@ -96,10 +96,11 @@ int is_array_not_empty(array_t *array);
 void *_array_add(array_t *array, size_t type_size);
 
 /**
- * Decreases array's count and shrinks it's size.
+ * Returns the last element from the array and assigns it to NULL in the array_remove_last macros.
  * \param   array           The array to get last element from.
+ * \return				    The last element from the given array, or NULL if failed.
  */
-void _array_shrink(array_t *array);
+void *_array_remove_last(array_t *array);
 
 /**
  * Returns the last element from the array and casts it to the given type in the array_get_last macros.
@@ -138,13 +139,13 @@ void *_array_get_element_at(array_t *array, size_t index, size_t type_size);
  * \param   t           A data type that array has previously collected (f.e. var, int, float, ENTITY*).
  * \param   a           Pointer to the array we are removing element from.
  */
-#define array_remove_last(t, a) sys_free(*((t *)_array_get_last(a, sizeof(t)))); _array_shrink(a)
+#define array_remove_last(t, a) *((t *)_array_remove_last(a)) = NULL
 
 /**
  * Removes all elements from the given array.
  * \param   a           Pointer to the array we are removing all elements from.
  */
-#define array_clear(t, a) do{ int i = 0, count = array->count; for (i = 0; i < count; i++) { array_remove_last(t, array); } } while (0)
+#define array_clear(a) do { int i, count = a->count; for(i = 0; i < count; i ++) array_remove_last(var, a); }while(0)
 
 /**
  * Returns the last element from the array. The element will be casted to the given data type.
@@ -170,7 +171,7 @@ void *_array_get_element_at(array_t *array, size_t index, size_t type_size);
  * \param   i           Index of the element in the array to change.
  * \param   n           New value to change element to.
  */
-#define array_set_element_at(t, a, i, v) memcpy(array_get_element_at(t, a, i), v, sizeof(t))
+#define array_set_element_at(t, a, i, n) *((t *)_array_get_element_at(a, i, sizeof(t))) = (n)
 
 /**
  * Begins enumerating through the array + 'v' is set to the next element of the array. Make sure to not use ';' at the end when using !

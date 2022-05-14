@@ -109,13 +109,22 @@ void *_array_add(array_t *array, size_t type_size)
     return last_element;
 }
 
-void _array_shrink(array_t *array)
+void *_array_remove_last(array_t *array)
 {
+    if (!array)
+    {
+        diag("ERROR in _array_remove_last! Array pointer is NULL!");
+        return NULL;
+    }
+
     array->count--;
     if (array->count < (array->capacity * 0.5))
     {
         array_change_size_to(array, array->capacity * 0.5);
     }
+
+    void *last_element = (unsigned char *)(array->data) + array->count * array->type_size;
+    return last_element;
 }
 
 void *_array_get_last(array_t *array, size_t type_size)

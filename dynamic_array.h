@@ -139,13 +139,30 @@ void *_array_get_element_at(array_t *array, size_t index, size_t type_size);
  * \param   t           A data type that array has previously collected (f.e. var, int, float, ENTITY*).
  * \param   a           Pointer to the array we are removing element from.
  */
-#define array_remove_last(t, a) *((t *)_array_remove_last(a)) = NULL
+#define array_remove_last(t, a) if(is_array_not_empty(a)) *((t *)_array_remove_last(a)) = NULL
+
+/**
+ * Removes element at the given index.
+ * \param   t           A data type that array has previously collected (f.e. var, int, float, ENTITY*).
+ * \param   a           Pointer to the array we are removing element from.
+ * \param   i           Index of the element in the array to be removed.
+ */
+#define array_remove_element_at(t, a, i) int j, count = a->count; for (j = i; j < count - 1; j++){ if (array_get_element_at(t, a, j + 1) != NULL) array_set_element_at(t, a, j, array_get_element_at(t, a, j + 1)); } array_remove_last(t, a)
 
 /**
  * Removes all elements from the given array.
  * \param   a           Pointer to the array we are removing all elements from.
  */
-#define array_clear(a) do { int i, count = a->count; for(i = 0; i < count; i ++) array_remove_last(var, a); }while(0)
+#define array_clear(t, a) do { int i, count = a->count; for(i = 0; i < count; i ++) array_remove_last(t, a); }while(0)
+
+/**
+ * Returns the element from the array at the given index. The element will be casted to the given data type.
+ * \param   t           A data type to cast element to (f.e. var, int, float, ENTITY*).
+ * \param   a           Pointer to the array we are getting element from.
+ * \param   i           Index of the element in the array.
+ * \return				Array element casted to the data type given in t parameter above.
+ */
+#define array_get_element_at(t, a, i) *((t *)_array_get_element_at(a, i, sizeof(t)))
 
 /**
  * Returns the last element from the array. The element will be casted to the given data type.
@@ -156,13 +173,12 @@ void *_array_get_element_at(array_t *array, size_t index, size_t type_size);
 #define array_get_last(t, a) *((t *)_array_get_last(a, sizeof(t)))
 
 /**
- * Returns the element from the array at the given index. The element will be casted to the given data type.
+ * Returns the first element from the array. The element will be casted to the given data type.
  * \param   t           A data type to cast element to (f.e. var, int, float, ENTITY*).
  * \param   a           Pointer to the array we are getting element from.
- * \param   i           Index of the element in the array.
  * \return				Array element casted to the data type given in t parameter above.
  */
-#define array_get_element_at(t, a, i) *((t *)_array_get_element_at(a, i, sizeof(t)))
+#define array_get_first(t, a) array_get_element_at(t, a, 0)
 
 /**
  * Changes the element of an array at the given index to a new value.

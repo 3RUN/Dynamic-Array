@@ -13,53 +13,39 @@ array_t *a = NULL;
 void test_add()
 {
     if (!a)
-    {
-        a = array_create(var, 2);
-    }
+        a = array_create(int, 2);
 
-    var counter = 0;
     int i = 0;
     for (i = 0; i < 10; i++)
-    {
-        array_add(var, a, counter);
-        counter++;
-    }
+        array_add(int, a, i);
 }
 
 void test_remove_last()
 {
     if (!a)
-    {
         return;
-    }
 
     if (is_array_not_empty(a) == true)
-    {
-        array_remove_last(var, a);
-    }
+        array_remove_last(int, a);
 }
 
 void test_clear_all()
 {
     if (!a)
-    {
         return;
-    }
 
-    array_clear(a);
+    array_clear(int, a);
 }
 
 void test_enumerate()
 {
     if (!a)
-    {
         return;
-    }
 
-    var value = 0;
-    array_enumerate_begin(var, a, value)
+    int value = 0;
+    array_enumerate_begin(int, a, value)
     {
-        printf("%.0f\n", (double)value);
+        printf("%d\n", (long)value);
     }
     array_enumerate_end(a);
 }
@@ -67,17 +53,13 @@ void test_enumerate()
 void test_contains()
 {
     if (!a)
-    {
         return;
-    }
 
-    var element = 5, found = false;
-    array_enumerate_begin(var, a, v)
+    int element = 5, found = false;
+    array_enumerate_begin(int, a, v)
     {
-        if (array_get_element_at(var, a, i) != element)
-        {
+        if (array_get_element_at(int, a, i) != element)
             continue;
-        }
 
         found = true;
         printf("found at index: %d\n", i + 1);
@@ -85,24 +67,18 @@ void test_contains()
     array_enumerate_end(a);
 
     if (found == false)
-    {
-        printf("Number %.0f wasn't found in the array.", (double)element);
-    }
+        printf("Number %.d wasn't found in the array.", (long)element);
 }
 
 void test_change_odds()
 {
     if (!a)
-    {
         return;
-    }
 
-    array_enumerate_begin(var, a, v)
+    array_enumerate_begin(int, a, v)
     {
         if (v % 2 == true)
-        {
-            array_set_element_at(var, a, i, 555);
-        }
+            array_set_element_at(int, a, i, 555);
     }
     array_enumerate_end(a);
 }
@@ -113,16 +89,49 @@ void on_exit_event()
     a = NULL;
 }
 
+void test_remove_at()
+{
+    if (!a)
+        return;
+
+    array_remove_element_at(int, a, 2);
+}
+
+void test_first()
+{
+    if (!a)
+        return;
+
+    if (!is_array_not_empty(a))
+        return;
+
+    error(str_printf(NULL, "First element is: %d", (long)array_get_first(int, a)));
+}
+
+void test_last()
+{
+    if (!a)
+        return;
+
+    if (!is_array_not_empty(a))
+        return;
+
+    error(str_printf(NULL, "Last element is: %d", (long)array_get_last(int, a)));
+}
+
 void main()
 {
     on_exit = on_exit_event;
 
     on_1 = test_add;
-    on_2 = test_remove_last;
-    on_3 = test_clear_all;
-    on_4 = test_enumerate;
-    on_5 = test_contains;
-    on_6 = test_change_odds;
+    on_2 = test_remove_at;
+    on_3 = test_remove_last;
+    on_4 = test_clear_all;
+    on_5 = test_enumerate;
+    on_6 = test_contains;
+    on_7 = test_change_odds;
+    on_8 = test_first;
+    on_9 = test_last;
 
     fps_max = 60;
     warn_level = 6;
@@ -130,8 +139,8 @@ void main()
 
     while (!key_esc)
     {
-        STRING *help_str = "1-to add 10 elements (0...9)\n2-to remove last item\n3-to clear the whole array\n4 - to cycle through all elements\n5 - check if array contains number 5\n6 - change all odd numbers to 555";
-        draw_text(help_str, 10, 0, COLOR_WHITE);
+        STRING *help_str = "1 - add 10 elements into the array\n2 - remove element at index 2 (or last)\n3 - remove last element\n4 - clear the whole array\n5 - enumerate the array\n6 - check if array contains element 5\n7 - change odd numbers to 555\n8 - return first element\n9 - return last element";
+        draw_text(help_str, 64, 0, COLOR_WHITE);
 
         if (a)
         {
@@ -139,18 +148,13 @@ void main()
             DEBUG_VAR(array_get_count(a), 140);
             DEBUG_VAR(is_array_not_empty(a), 160);
 
-            // don't allow to crash when empty
-            if (is_array_not_empty(a) == true)
+            if (is_array_not_empty(a))
             {
-                var last = array_get_last(var, a);
-                DEBUG_VAR(last, 200);
+                DEBUG_VAR(array_get_last(int, a), 200);
 
                 int i = 0;
                 for (i = 0; i < array_get_count(a); i++)
-                {
-                    var num = array_get_element_at(var, a, i);
-                    DEBUG_VAR(num, 240 + 20 * i);
-                }
+                    DEBUG_VAR(array_get_element_at(int, a, i), 240 + 20 * i);
             }
         }
         wait(1);

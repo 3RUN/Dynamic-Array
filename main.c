@@ -1,162 +1,123 @@
-
 #include <acknex.h>
 #include <default.c>
-#include <stdio.h>
 
 #define PRAGMA_POINTER
 
 #include "cmd.h"
 #include "dynamic_array.h"
 
-array_t *a = NULL;
+Array *array;
+
+int find(Array *array, void *item)
+{
+    if (!array || !item)
+        return -1;
+
+    return array_find(array, item);
+}
 
 void test_add()
 {
-    if (!a)
-        a = array_create(int, 2);
+    if (!array)
+        return;
 
-    int i = 0;
-    for (i = 0; i < 10; i++)
-        array_add(int, a, i);
+    array_add(array, 55);
 }
 
-void test_remove_last()
+void test_insert()
 {
-    if (!a)
+    if (!array)
         return;
 
-    if (is_array_not_empty(a) == true)
-        array_remove_last(int, a);
+    int index = 1, element = 11;
+
+    if (is_valid_index(array, index))
+        array_insert_at(array, index, element);
 }
 
-void test_clear_all()
+void test_remove()
 {
-    if (!a)
+    if (!array)
         return;
 
-    array_clear(int, a);
+    if (is_array_empty(array))
+        return;
+
+    array_remove_last(array);
 }
 
-void test_enumerate()
+void test_clear()
 {
-    if (!a)
+    if (!array)
         return;
 
-    int value = 0;
-    array_enumerate_begin(int, a, value)
-    {
-        printf("%d\n", (long)value);
-    }
-    array_enumerate_end(a);
+    if (is_array_empty(array))
+        return;
+
+    array_clear(array);
 }
 
-void test_contains()
+void test_swap()
 {
-    if (!a)
+    if (!array)
         return;
 
-    int element = 5, found = false;
-    array_enumerate_begin(int, a, v)
-    {
-        if (array_get_element_at(int, a, i) != element)
-            continue;
+    if (is_array_empty(array))
+        return;
 
-        found = true;
-        printf("found at index: %d\n", i + 1);
-    }
-    array_enumerate_end(a);
-
-    if (found == false)
-        printf("Number %.d wasn't found in the array.", (long)element);
+    array_swap(array, 0, array->size - 1);
 }
 
-void test_change_odds()
+void test_change()
 {
-    if (!a)
+    if (!array)
         return;
 
-    array_enumerate_begin(int, a, v)
-    {
-        if (v % 2 == true)
-            array_set_element_at(int, a, i, 555);
-    }
-    array_enumerate_end(a);
-}
+    int index = 3, element = 555;
 
-void on_exit_event()
-{
-    array_destroy(a);
-    a = NULL;
-}
-
-void test_remove_at()
-{
-    if (!a)
-        return;
-
-    array_remove_element_at(int, a, 2);
-}
-
-void test_first()
-{
-    if (!a)
-        return;
-
-    if (!is_array_not_empty(a))
-        return;
-
-    error(str_printf(NULL, "First element is: %d", (long)array_get_first(int, a)));
-}
-
-void test_last()
-{
-    if (!a)
-        return;
-
-    if (!is_array_not_empty(a))
-        return;
-
-    error(str_printf(NULL, "Last element is: %d", (long)array_get_last(int, a)));
+    if (is_valid_index(array, index))
+        array_change_at(int, array, index, element);
 }
 
 void main()
 {
-    on_exit = on_exit_event;
-
     on_1 = test_add;
-    on_2 = test_remove_at;
-    on_3 = test_remove_last;
-    on_4 = test_clear_all;
-    on_5 = test_enumerate;
-    on_6 = test_contains;
-    on_7 = test_change_odds;
-    on_8 = test_first;
-    on_9 = test_last;
+    on_2 = test_insert;
+    on_3 = test_remove;
+    on_4 = test_swap;
+    on_5 = test_clear;
+    on_6 = test_change;
 
     fps_max = 60;
     warn_level = 6;
-    random_seed(0);
+
+    array = array_create(int);
+
+    int i = 0;
+    for (i = 0; i < 5; i++)
+        array_add(array, i);
 
     while (!key_esc)
     {
-        STRING *help_str = "1 - add 10 elements into the array\n2 - remove element at index 2 (or last)\n3 - remove last element\n4 - clear the whole array\n5 - enumerate the array\n6 - check if array contains element 5\n7 - change odd numbers to 555\n8 - return first element\n9 - return last element";
-        draw_text(help_str, 64, 0, COLOR_WHITE);
+        draw_text("1 - to add 55 at the end\n2 - to insert 11 at index 1\n3 - to remove last element\n4 - to swap first and last elements\n5 - to clear\n6 - to change element at index 3 to 555", 100, 100, COLOR_WHITE);
+        draw_text(str_printf(NULL, "size is=%d; capacity is=%d; is_empty=%d;", (long)array_size(array), (long)array_capacity(array), (long)is_array_empty(array)), 10, 0, COLOR_RED);
 
-        if (a)
+        if (find(array, 3) != -1)
+            draw_text(str_printf(NULL, "number 3 was found at index %d", (long)find(array, 3)), 10, 20, COLOR_RED);
+        else
+            draw_text("number 3 wasn't found", 10, 20, COLOR_RED);
+
+        if (!is_array_empty(array))
         {
-            DEBUG_VAR(a->capacity, 120);
-            DEBUG_VAR(array_get_count(a), 140);
-            DEBUG_VAR(is_array_not_empty(a), 160);
-
-            if (is_array_not_empty(a))
-            {
-                DEBUG_VAR(array_get_last(int, a), 200);
-
-                int i = 0;
-                for (i = 0; i < array_get_count(a); i++)
-                    DEBUG_VAR(array_get_element_at(int, a, i), 240 + 20 * i);
-            }
+            draw_text(str_printf(NULL, "first %d", (long)array_first(int, array)), 10, 40, COLOR_RED);
+            draw_text(str_printf(NULL, "last %d", (long)array_last(int, array)), 10, 60, COLOR_RED);
         }
+
+        for (i = 0; i < array_size(array); i++)
+            DEBUG_VAR(array_get_at(int, array, i), 100 + 20 * i);
+
         wait(1);
     }
+
+    array_destroy(array);
 }

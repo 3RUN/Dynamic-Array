@@ -1,5 +1,3 @@
-
-
 Array *_array_create(size_t type_size)
 {
     Array *array = sys_malloc(sizeof(Array));

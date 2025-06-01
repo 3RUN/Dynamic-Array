@@ -34,6 +34,9 @@ void array_change_capacity(Array *array, size_t new_capacity)
         new_capacity = array->capacity * 2;
 
     ArrayData *new_data = sys_malloc(new_capacity * array->type_size);
+    if (!new_data)
+        return;
+
     memcpy(new_data, array->data, array->size * array->type_size);
     sys_free(array->data);
 
@@ -81,7 +84,7 @@ bool is_valid_index(Array *array, int index)
     if (is_array_empty(array))
         return false;
 
-    return index > 0 && index < array->size;
+    return index >= 0 && index < array->size;
 }
 
 ArrayData *_array_at(Array *array, int index)
@@ -132,8 +135,8 @@ void array_add(Array *array, ArrayData *item)
     if (array->size >= array->capacity)
         array_change_capacity(array, array->capacity * 2);
 
-    array_change_at(ArrayData *, array, array->size, item);
     array->size++;
+    array_change_at(ArrayData *, array, array->size - 1, item);
 }
 
 void array_remove_last(Array *array)
@@ -167,7 +170,7 @@ void array_remove_at(Array *array, int index)
         return;
     }
 
-    if (index == array->size)
+    if (index >= array->size)
         return;
 
     int i = 0;

@@ -14,13 +14,14 @@ Array *_array_create(size_t type_size)
     return array;
 }
 
-void array_destroy(Array *array)
+void array_destroy(Array **array)
 {
-    if (!array)
+    if (!(*array))
         return;
 
-    sys_free(array->data);
-    sys_free(array);
+    sys_free((*array)->data);
+    sys_free(*array);
+    *array = NULL;
 }
 
 void array_change_capacity(Array *array, size_t new_capacity)
@@ -82,7 +83,7 @@ bool is_valid_index(Array *array, int index)
     if (is_array_empty(array))
         return false;
 
-    return index >= 0 && index < array->size;
+    return index >= 0 && index <= array->size;
 }
 
 ArrayData *_array_at(Array *array, int index)
@@ -90,7 +91,7 @@ ArrayData *_array_at(Array *array, int index)
     if (!array)
         return NULL;
 
-    if (index < 0 || index > array->size)
+    if (!is_valid_index(array, index))
     {
 #ifdef DEBUG_ARRAY
         error("Can't get item. Index out of range!");
@@ -106,12 +107,12 @@ void array_insert_at(Array *array, int index, ArrayData *item)
     if (!array)
         return;
 
-    if (index < 0 || index > array->size)
+    if (!is_valid_index(array, index))
     {
 #ifdef DEBUG_ARRAY
         error("Can't insert item. Index out of range!");
 #endif
-        return NULL;
+        return;
     }
 
     array->size++;
@@ -160,7 +161,7 @@ void array_remove_at(Array *array, int index)
     if (is_array_empty(array))
         return;
 
-    if (index < 0 || index > array->size)
+    if (!is_valid_index(array, index))
     {
 #ifdef DEBUG_ARRAY
         error("Can't remove item. Index out of range!");

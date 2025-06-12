@@ -65,7 +65,7 @@ Array *_array_create(size_t type_size);
  * Destroys the array. Note that elements aren't freed.
  * \param   array           The array to be destroyed.
  */
-void array_destroy(Array *array);
+void array_destroy(Array **array);
 
 /**
  * Changes the capacity of the array to the given new_capacity. Can be used for decreasing the capacity as well.

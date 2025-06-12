@@ -119,5 +119,5 @@ void main()
         wait(1);
     }
 
-    array_destroy(array);
+    array_destroy(&array);
 }
